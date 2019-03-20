@@ -1,0 +1,13 @@
+apiVersion: kuberule.chickenzord.com/v1alpha1
+kind: PodRule
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: podrule-sample
+spec:
+  selector:
+    foo: bar
+  mutations:
+  - addAnnotations:
+      chickenzord.com/log: 'scalyr'
+  validations: []
