@@ -1,0 +1,17 @@
+.git/
+.dockerignore
+.gitignore
+.env
+*.env
+*.yaml
+*.yml
+*.tar.gz
+*.out
+
+Makefile
+Dockerfile
+
+/bin/
+/hack/
+/config/
+/vendor/
