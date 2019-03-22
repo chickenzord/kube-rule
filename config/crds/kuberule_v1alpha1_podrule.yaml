@@ -27,6 +27,26 @@ spec:
         metadata:
           type: object
         spec:
+          properties:
+            applyOrder:
+              description: Arbitrary number to define ordering of multiple rules matching
+                same pods. Higher number will be applied later, but might override
+                mutations of smaller number.
+              format: int32
+              type: integer
+            mutations:
+              description: Mutations to be done on the selected pods
+              properties:
+                annotations:
+                  description: Annotations to be merged with selected pods' existing
+                    annotations
+                  type: object
+              type: object
+            selector:
+              description: Label selector for pods
+              type: object
+          required:
+          - applyOrder
           type: object
         status:
           type: object

@@ -6,8 +6,8 @@ metadata:
   name: podrule-sample
 spec:
   selector:
-    foo: bar
+    matchLabel:
   mutations:
-  - addAnnotations:
+    annotations:
       chickenzord.com/log: 'scalyr'
-  validations: []
+

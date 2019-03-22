@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/chickenzord/kube-rule/pkg/apis"
+	appconfig "github.com/chickenzord/kube-rule/pkg/config"
 	"github.com/chickenzord/kube-rule/pkg/controller"
 	"github.com/chickenzord/kube-rule/pkg/webhook"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -20,6 +21,8 @@ func main() {
 	flag.Parse()
 	logf.SetLogger(logf.ZapLogger(false))
 	log := logf.Log.WithName("entrypoint")
+
+	log.Info(appconfig.Json())
 
 	// Get a config to talk to the apiserver
 	log.Info("setting up client for manager")

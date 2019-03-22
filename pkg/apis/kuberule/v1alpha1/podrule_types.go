@@ -7,10 +7,26 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+// PodRuleMutations defines mutations to be done on the selected pods
+type PodRuleMutations struct {
+	// Annotations to be merged with selected pods' existing annotations
+	// +optional
+	Annotations map[string]string `json:"annotations,omitempty"`
+}
+
 // PodRuleSpec defines the desired state of PodRule
 type PodRuleSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// Arbitrary number to define ordering of multiple rules matching same pods.
+	// Higher number will be applied later, but might override mutations of smaller number.
+	ApplyOrder int32 `json:"applyOrder"`
+
+	// Label selector for pods
+	// +optional
+	Selector *metav1.LabelSelector `json:"selector,omitempty"`
+
+	// Mutations to be done on the selected pods
+	// +optional
+	Mutations *PodRuleMutations `json:"mutations,omitempty"`
 }
 
 // PodRuleStatus defines the observed state of PodRule
