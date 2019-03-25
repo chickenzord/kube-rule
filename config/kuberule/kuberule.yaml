@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kuberule
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kuberule
+  namespace: kuberule
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kuberule-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kuberule:controller
+subjects:
+- kind: ServiceAccount
+  name: kuberule
+  namespace: kuberule
+---
+apiVersion: v1
+data:
+kind: Secret
+metadata:
+  name: kuberule
+  namespace: kuberule
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kuberule
+  namespace: kuberule
+  labels:
+    app: kuberule
+spec:
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: kuberule
+  serviceName: kuberule
+  template:
+    metadata:
+      labels:
+        app: kuberule
+    spec:
+      serviceAccountName: kuberule
+      containers:
+      - command:
+        - /manager
+        image: chickenzord/kube-rule:0.1.0-rc
+        imagePullPolicy: Always
+        name: kuberule
+        env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+        ports:
+        - containerPort: 9876
+          name: webhook-server
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /tmp/cert
+          name: cert
+          readOnly: true
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: kuberule

@@ -50,3 +50,9 @@ docker-build: test
 # Push the docker image
 docker-push:
 	docker push ${IMG}
+
+
+quick-install:
+	kubectl apply -f config/crds/kuberule_v1alpha1_podrule.yaml
+	kubectl apply -f config/kuberule/clusterroles.yaml
+	kubectl apply -f config/kuberule/kuberule.yaml
