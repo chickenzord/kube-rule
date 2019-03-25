@@ -1,6 +1,13 @@
 # kube-rule
 
-Kubernetes admission webhook with rules
+[![Build Status](https://travis-ci.org/chickenzord/kube-rule.svg?branch=master)](https://travis-ci.org/chickenzord/kube-rule)
+[![Go Report Card](https://goreportcard.com/badge/github.com/chickenzord/kube-rule)](https://goreportcard.com/report/github.com/chickenzord/kube-rule)
+[![codecov](https://codecov.io/gh/chickenzord/kube-rule/branch/master/graph/badge.svg)](https://codecov.io/gh/chickenzord/kube-rule)
+[![Automated Docker Build](https://img.shields.io/docker/automated/chickenzord/kube-rule.svg)](https://hub.docker.com/r/chickenzord/kube-rule/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/chickenzord/kube-rule.svg)](https://hub.docker.com/r/chickenzord/kube-rule/)
+
+Kubernetes pods admission webhook based on rules CRD. Rewrite of [kube-annotate](https://github.com/chickenzord/kube-annotate) with more generalized uses.
+
 
 ## TL;DR
 
