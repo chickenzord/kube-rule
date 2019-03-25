@@ -1,0 +1,3 @@
+version: "1"
+domain: chickenzord.com
+repo: github.com/chickenzord/kube-rule
