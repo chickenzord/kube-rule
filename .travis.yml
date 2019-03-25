@@ -4,18 +4,17 @@ go:
 
 env:
 - DEP_VERSION=0.5.1
-  KUBEBUILDER_ASSETS=/usr/local/kubebuilder/bin
 
 cache:
   directories:
   - $GOPATH/pkg/dep/sources
-  - $KUBEBUILDER_ASSETS
+  - bin/kubebuilder
 
 before_script:
 # install kubebuilder
 - curl -L -O "https://github.com/kubernetes-sigs/kubebuilder/releases/download/v1.0.7/kubebuilder_1.0.7_linux_amd64.tar.gz"
 - tar -zxvf kubebuilder_1.0.7_linux_amd64.tar.gz
-- mv kubebuilder_1.0.7_linux_amd64 $(dirname $KUBEBUILDER_ASSETS)
+- mkdir -p bin/ && mv kubebuilder_1.0.7_linux_amd64 bin/kubebuilder
 # install dep
 - curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64
   -o $GOPATH/bin/dep
@@ -24,7 +23,8 @@ before_script:
 
 script:
 - go vet ./...
-- go test -v -cover -coverprofile=coverage.txt -covermode=atomic ./...
+- KUBEBUILDER_ASSETS="$(realpath bin/kubebuilder)/bin"
+  go test -v -cover -coverprofile=coverage.txt -covermode=atomic ./...
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
