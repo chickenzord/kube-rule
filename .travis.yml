@@ -13,7 +13,7 @@ before_script:
 # install kubebuilder
 - curl -L -O "https://github.com/kubernetes-sigs/kubebuilder/releases/download/v1.0.7/kubebuilder_1.0.7_linux_amd64.tar.gz"
 - tar -zxvf kubebuilder_1.0.7_linux_amd64.tar.gz
-- mkdir -p bin/ && mv kubebuilder_1.0.7_linux_amd64 bin/kubebuilder
+- mv kubebuilder_1.0.7_linux_amd64 $HOME/kubebuilder
 # install dep
 - curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64
   -o $GOPATH/bin/dep
@@ -22,7 +22,7 @@ before_script:
 
 script:
 - go vet ./pkg/... ./cmd/...
-- KUBEBUILDER_ASSETS="$TRAVIS_BUILD_DIR/bin/kubebuilder/bin"
+- KUBEBUILDER_ASSETS="$HOME/kubebuilder/bin"
   go test -v -cover -coverprofile=coverage.txt -covermode=atomic ./pkg/... ./cmd/...
 
 after_success:
