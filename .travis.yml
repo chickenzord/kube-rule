@@ -8,7 +8,6 @@ env:
 cache:
   directories:
   - $GOPATH/pkg/dep/sources
-  - bin/kubebuilder
 
 before_script:
 # install kubebuilder
@@ -22,9 +21,9 @@ before_script:
 - dep ensure -v --vendor-only
 
 script:
-- go vet ./...
-- KUBEBUILDER_ASSETS="$(realpath bin/kubebuilder)/bin"
-  go test -v -cover -coverprofile=coverage.txt -covermode=atomic ./...
+- go vet ./pkg/... ./cmd/...
+- KUBEBUILDER_ASSETS="$TRAVIS_BUILD_DIR/bin/kubebuilder/bin"
+  go test -v -cover -coverprofile=coverage.txt -covermode=atomic ./pkg/... ./cmd/...
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
