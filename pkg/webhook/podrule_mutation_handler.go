@@ -15,27 +15,31 @@ type podRuleMutationHandler struct {
 	decoder types.Decoder
 }
 
-var defaultPodRuleSpecApplyOrder int32 = 1
-
 // podRuleMutationHandler Implements admission.Handler.
 var _ admission.Handler = &podRuleMutationHandler{}
 
 // podRuleMutationHandler adds an annotation to every incoming pods.
 func (a *podRuleMutationHandler) Handle(ctx context.Context, req types.Request) types.Response {
+	// decode request
 	podRule := &kuberule.PodRule{}
-
 	err := a.decoder.Decode(req, podRule)
 	if err != nil {
 		return admission.ErrorResponse(http.StatusBadRequest, err)
 	}
 
+	// mutate
+	log.Info("mutating podrule",
+		"podrule", podRule,
+		"request.namespace", req.AdmissionRequest.Namespace,
+		"request.operation", req.AdmissionRequest.Operation,
+	)
 	copy := podRule.DeepCopy()
 	err = a.mutatePodRuleFn(ctx, copy)
 	if err != nil {
 		return admission.ErrorResponse(http.StatusInternalServerError, err)
 	}
 
-	// admission.PatchResponse generates a Response containing patches.
+	// create patch
 	return admission.PatchResponse(podRule, copy)
 }
 

@@ -41,12 +41,17 @@ spec:
                   description: Annotations to be merged with selected pods' existing
                     annotations
                   type: object
+                nodeSelector:
+                  description: NodeSelector to be added to selected pods according
+                    to nodeSelectorStrategy
+                  type: object
               type: object
             selector:
               description: Label selector for pods
               type: object
           required:
           - applyOrder
+          - selector
           type: object
         status:
           type: object

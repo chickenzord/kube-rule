@@ -7,11 +7,16 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// PodRuleMutations defines mutations to be done on the selected pods
+// PodRuleMutations defines mutations to be applied on the selected pods
 type PodRuleMutations struct {
+
 	// Annotations to be merged with selected pods' existing annotations
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// NodeSelector to be added to selected pods according to nodeSelectorStrategy
+	// +optional
+	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
 }
 
 // PodRuleSpec defines the desired state of PodRule
@@ -21,12 +26,10 @@ type PodRuleSpec struct {
 	ApplyOrder int32 `json:"applyOrder"`
 
 	// Label selector for pods
-	// +optional
-	Selector *metav1.LabelSelector `json:"selector,omitempty"`
+	Selector metav1.LabelSelector `json:"selector"`
 
 	// Mutations to be done on the selected pods
-	// +optional
-	Mutations *PodRuleMutations `json:"mutations,omitempty"`
+	Mutations PodRuleMutations `json:"mutations,omitempty"`
 }
 
 // PodRuleStatus defines the observed state of PodRule

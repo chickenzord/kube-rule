@@ -7,12 +7,16 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission/builder"
 )
 
+var log = logf.Log.WithName("webhook.kuberule")
+
 func createMutatePodsWebhook(mgr manager.Manager) (*admission.Webhook, error) {
+	// TODO: add namespace selector
 	return builder.NewWebhookBuilder().
 		Name("mutatepods.kuberule.chickenzord.com").
 		Mutating().
@@ -31,6 +35,7 @@ func createMutatePodsWebhook(mgr manager.Manager) (*admission.Webhook, error) {
 }
 
 func createValidatePodRulesWebhook(mgr manager.Manager) (*admission.Webhook, error) {
+	// TODO: add namespace selector
 	return builder.NewWebhookBuilder().
 		Name("validatepodrules.kuberule.chickenzord.com").
 		Validating().
@@ -49,6 +54,7 @@ func createValidatePodRulesWebhook(mgr manager.Manager) (*admission.Webhook, err
 }
 
 func createMutatePodRulesWebhook(mgr manager.Manager) (*admission.Webhook, error) {
+	// TODO: add namespace selector
 	return builder.NewWebhookBuilder().
 		Name("mutatepodrules.kuberule.chickenzord.com").
 		Mutating().

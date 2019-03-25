@@ -28,6 +28,12 @@ func (a *podRuleValidationHandler) Handle(ctx context.Context, req types.Request
 		return admission.ErrorResponse(http.StatusBadRequest, err)
 	}
 
+	log.Info("validating podrule",
+		"podrule", podRule,
+		"request.namespace", req.AdmissionRequest.Namespace,
+		"request.operation", req.AdmissionRequest.Operation,
+	)
+
 	if err := a.validatePodRuleFn(ctx, podRule); err != nil {
 		return admission.ValidationResponse(false, err.Error())
 	}
