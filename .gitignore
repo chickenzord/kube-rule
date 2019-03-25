@@ -26,3 +26,4 @@ bin
 /vendor/
 /bin/
 *.tar.gz
+/coverage.txt
