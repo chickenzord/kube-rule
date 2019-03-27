@@ -44,9 +44,14 @@ spec:
                   description: Annotations to be merged with selected pods' existing
                     annotations
                   type: object
+                imagePullSecrets:
+                  description: ImagePullSecrets to be added to selected pods +patchMergeKey=name
+                    +patchStrategy=merge
+                  items:
+                    type: object
+                  type: array
                 nodeSelector:
-                  description: NodeSelector to be added to selected pods according
-                    to nodeSelectorStrategy
+                  description: NodeSelector to be added to selected pods
                   type: object
                 tolerations:
                   description: If specified, the pod's tolerations.

@@ -19,9 +19,15 @@ type PodRuleMutations struct {
 	// +optional
 	Affinity *corev1.Affinity `json:"affinity,omitempty"`
 
-	// NodeSelector to be added to selected pods according to nodeSelectorStrategy
+	// NodeSelector to be added to selected pods
 	// +optional
 	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
+
+	// ImagePullSecrets to be added to selected pods
+	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	ImagePullSecrets []corev1.LocalObjectReference `json:"imagePullSecrets,omitempty"`
 
 	// If specified, the pod's tolerations.
 	// +optional

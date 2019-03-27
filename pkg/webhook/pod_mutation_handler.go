@@ -112,6 +112,26 @@ func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, 
 		}
 	}
 
+	// append imagePullSecrets
+	if pod.Spec.ImagePullSecrets == nil {
+		pod.Spec.ImagePullSecrets = []corev1.LocalObjectReference{}
+	}
+	if mutations.ImagePullSecrets != nil {
+		for _, secret := range mutations.ImagePullSecrets {
+			found := false
+			for _, existing := range pod.Spec.ImagePullSecrets {
+				if secret.Name == existing.Name {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				pod.Spec.ImagePullSecrets = append(pod.Spec.ImagePullSecrets, secret)
+			}
+		}
+	}
+
 	// TODO: add more mutations here
 
 	return nil
