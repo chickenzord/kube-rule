@@ -5,6 +5,7 @@
 [![codecov](https://codecov.io/gh/chickenzord/kube-rule/branch/master/graph/badge.svg)](https://codecov.io/gh/chickenzord/kube-rule)
 [![Automated Docker Build](https://img.shields.io/docker/automated/chickenzord/kube-rule.svg)](https://hub.docker.com/r/chickenzord/kube-rule/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/chickenzord/kube-rule.svg)](https://hub.docker.com/r/chickenzord/kube-rule/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchickenzord%2Fkube-rule.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchickenzord%2Fkube-rule?ref=badge_shield)
 
 Kubernetes pods admission webhook based on rules CRD. Rewrite of [kube-annotate](https://github.com/chickenzord/kube-annotate) with more generalized uses.
 
@@ -89,3 +90,7 @@ This tool code was bootstrapped using [kubebuilder](http://kubebuilder.netlify.c
 - Support more specs: tolerations, podAffinity, nodeAffinity, etc
 - Support more resources: deployments, statefulsets, daemonsets, etc
 - ClusterPodRule CRD (cluster-wide version of PodRule)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchickenzord%2Fkube-rule.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchickenzord%2Fkube-rule?ref=badge_large)
