@@ -37,6 +37,9 @@ spec:
             mutations:
               description: Mutations to be done on the selected pods
               properties:
+                affinity:
+                  description: If specified, the pod's scheduling constraints
+                  type: object
                 annotations:
                   description: Annotations to be merged with selected pods' existing
                     annotations
@@ -45,6 +48,11 @@ spec:
                   description: NodeSelector to be added to selected pods according
                     to nodeSelectorStrategy
                   type: object
+                tolerations:
+                  description: If specified, the pod's tolerations.
+                  items:
+                    type: object
+                  type: array
               type: object
             selector:
               description: Label selector for pods

@@ -1,6 +1,7 @@
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -14,9 +15,17 @@ type PodRuleMutations struct {
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
+	// If specified, the pod's scheduling constraints
+	// +optional
+	Affinity *corev1.Affinity `json:"affinity,omitempty"`
+
 	// NodeSelector to be added to selected pods according to nodeSelectorStrategy
 	// +optional
 	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
+
+	// If specified, the pod's tolerations.
+	// +optional
+	Tolerations []corev1.Toleration `json:"tolerations,omitempty"`
 }
 
 // PodRuleSpec defines the desired state of PodRule

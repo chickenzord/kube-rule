@@ -66,10 +66,7 @@ func (a *podMutationHandler) Handle(ctx context.Context, req types.Request) type
 
 // mutatePodsFn mutates the given pod
 func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, rule kuberule.PodRule) error {
-	// for convenience
 	mutations := rule.Spec.Mutations
-
-	// apply annotations
 	log.Info("applying mutations to pod",
 		"mutations.annotations", mutations.Annotations,
 		"mutations.nodeSelector", mutations.NodeSelector,
@@ -79,7 +76,7 @@ func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, 
 		"rule.name", rule.ObjectMeta.Name,
 	)
 
-	// apply annotations by merging with existing
+	// merge with existing annotations
 	if mutations.Annotations == nil {
 		mutations.Annotations = map[string]string{}
 	}
@@ -90,13 +87,28 @@ func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, 
 		pod.Annotations[key] = val
 	}
 
-	// apply nodeSelector only if not already set
+	// apply affinity only if not already exists
+	if pod.Spec.Affinity != nil && mutations.Affinity != nil {
+		pod.Spec.Affinity = mutations.Affinity
+	}
+
+	// apply nodeSelector only if not already exists
 	if pod.Spec.NodeSelector == nil {
 		pod.Spec.NodeSelector = map[string]string{}
 	}
 	if len(pod.Spec.NodeSelector) == 0 {
 		for key, val := range mutations.NodeSelector {
 			pod.Spec.NodeSelector[key] = val
+		}
+	}
+
+	// append to existing tolerations
+	if pod.Spec.Tolerations == nil {
+		pod.Spec.Tolerations = []corev1.Toleration{}
+	}
+	if mutations.Tolerations != nil {
+		for _, toleration := range mutations.Tolerations {
+			pod.Spec.Tolerations = append(pod.Spec.Tolerations, toleration)
 		}
 	}
 
