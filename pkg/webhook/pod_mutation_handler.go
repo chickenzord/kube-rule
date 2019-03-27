@@ -30,7 +30,7 @@ func (a *podMutationHandler) Handle(ctx context.Context, req admissiontypes.Requ
 	}
 	clone := pod.DeepCopy()
 
-	log.Info("receiving pod to handle",
+	log.Info("handling pod",
 		"request.namespace", req.AdmissionRequest.Namespace,
 		"request.operation", req.AdmissionRequest.Operation,
 		"pod.name", pod.Name,
@@ -66,8 +66,8 @@ func (a *podMutationHandler) Handle(ctx context.Context, req admissiontypes.Requ
 
 // mutatePodsFn mutates the given pod
 func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, rule kuberule.PodRule) error {
-	log.Info("applying mutation rule to pod",
-		"pod", pod,
+	log.Info("applying mutations to pod",
+		"pod", &pod,
 		"rule", rule,
 	)
 	mutations := rule.Spec.Mutations
