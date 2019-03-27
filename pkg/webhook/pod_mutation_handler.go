@@ -10,18 +10,18 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
-	"sigs.k8s.io/controller-runtime/pkg/webhook/admission/types"
+	admissiontypes "sigs.k8s.io/controller-runtime/pkg/webhook/admission/types"
 )
 
 type podMutationHandler struct {
 	client  client.Client
-	decoder types.Decoder
+	decoder admissiontypes.Decoder
 }
 
 var _ admission.Handler = &podMutationHandler{} // Implements admission.Handler.
 
 // podMutationHandler try to mutate every incoming pods based on rules
-func (a *podMutationHandler) Handle(ctx context.Context, req types.Request) types.Response {
+func (a *podMutationHandler) Handle(ctx context.Context, req admissiontypes.Request) admissiontypes.Response {
 	// Decode request and make a clone to mutate
 	pod := &corev1.Pod{}
 	err := a.decoder.Decode(req, pod)
@@ -66,15 +66,11 @@ func (a *podMutationHandler) Handle(ctx context.Context, req types.Request) type
 
 // mutatePodsFn mutates the given pod
 func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, rule kuberule.PodRule) error {
-	mutations := rule.Spec.Mutations
-	log.Info("applying mutations to pod",
-		"mutations.annotations", mutations.Annotations,
-		"mutations.nodeSelector", mutations.NodeSelector,
-		"pod.name", pod.Name,
-		"pod.generateName", pod.GenerateName,
-		"pod.annotations", pod.Annotations,
-		"rule.name", rule.ObjectMeta.Name,
+	log.Info("applying mutation rule to pod",
+		"pod", pod,
+		"rule", rule,
 	)
+	mutations := rule.Spec.Mutations
 
 	// merge with existing annotations
 	if mutations.Annotations == nil {
