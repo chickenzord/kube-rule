@@ -4,8 +4,8 @@
 [[projects]]
   name = "cloud.google.com/go"
   packages = ["compute/metadata"]
-  revision = "2fa99f4c25c422525316dcb1fd3d5b94e1944cfd"
-  version = "v0.37.1"
+  revision = "458e1f376a2b44413160b5d301183b65debaa3f6"
+  version = "v0.37.2"
 
 [[projects]]
   name = "github.com/appscode/jsonpatch"
@@ -31,8 +31,8 @@
     ".",
     "log"
   ]
-  revision = "85d198d05a92d31823b852b4a5928114912e8949"
-  version = "v2.9.0"
+  revision = "e64cccdfee8896c036b8a88d560c5e3ae15d904d"
+  version = "v2.9.1"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -92,10 +92,10 @@
   version = "v1.3.1"
 
 [[projects]]
-  branch = "master"
   name = "github.com/google/btree"
   packages = ["."]
   revision = "4030bb1f1f0c35b30ca7009e9ebd06849dd45306"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -338,7 +338,7 @@
     "nfs",
     "xfs"
   ]
-  revision = "40f3c57fb1983891f95378042bd0bfd590f52384"
+  revision = "55ae3d9d557340b5bc24cd8aa5f6fa2c2ab31352"
 
 [[projects]]
   name = "github.com/rogpeppe/go-internal"
@@ -356,8 +356,8 @@
     ".",
     "mem"
   ]
-  revision = "f4711e4db9e9a1d3887343acb72b2bbfc2f686f5"
-  version = "v1.2.1"
+  revision = "588a75ec4f32903aa5e39a2619ba6a4631e28424"
+  version = "v1.2.2"
 
 [[projects]]
   name = "github.com/spf13/cast"
@@ -418,7 +418,7 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "a1f597ede03a7bef967a422b5b3a5bd08805a01e"
+  revision = "a5d413f7728c81fb97d96a2b722368945f651e78"
 
 [[projects]]
   branch = "master"
@@ -434,7 +434,7 @@
     "http2/hpack",
     "idna"
   ]
-  revision = "d196dffd7c2beec1957382065df08bcc353b9706"
+  revision = "74e053c68e2965fe54b49e4d18cb37db34288db2"
 
 [[projects]]
   branch = "master"
@@ -455,7 +455,7 @@
     "unix",
     "windows"
   ]
-  revision = "6c81ef8f67ca3f42fc9cd71dfbd5f35b0c4b5771"
+  revision = "f49334f85ddcf0f08d7fb6dd7363e9e6d6b777eb"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -502,7 +502,6 @@
   packages = [
     "go/ast/astutil",
     "go/gcexportdata",
-    "go/internal/cgo",
     "go/internal/gcimporter",
     "go/internal/packagesdriver",
     "go/packages",
@@ -513,7 +512,7 @@
     "internal/module",
     "internal/semver"
   ]
-  revision = "3f1ed9edd1b43b011064eb59e5c9e73f5537ddd9"
+  revision = "79af862e6737e9b6ea995ccf9e8eaccd41ef1523"
 
 [[projects]]
   name = "google.golang.org/appengine"
@@ -529,8 +528,8 @@
     "internal/urlfetch",
     "urlfetch"
   ]
-  revision = "e9657d882bb81064595ca3b56cbe2546bbabf7b1"
-  version = "v1.4.0"
+  revision = "54a98f90d1c46b7731eb8fb305d2a321c30ef610"
+  version = "v1.5.0"
 
 [[projects]]
   name = "gopkg.in/fsnotify.v1"
@@ -777,7 +776,7 @@
   branch = "master"
   name = "k8s.io/kube-openapi"
   packages = ["pkg/util/proto"]
-  revision = "15615b16d372105f0c69ff47dfe7402926a65aaa"
+  revision = "5e45bb682580c9be5ffa4d27d367f0eeba125c7b"
 
 [[projects]]
   name = "sigs.k8s.io/controller-runtime"
@@ -858,6 +857,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a531987395094c2b6279c9c3972b8e3c299f634eea4790bbfa0f8599b212b8cc"
+  inputs-digest = "5ad77293161c1ac5509c97d0e0eeae84c477fb832d82aa0843a3dea735d0c247"
   solver-name = "gps-cdcl"
   solver-version = 1
