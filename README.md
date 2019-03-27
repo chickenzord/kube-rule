@@ -29,6 +29,8 @@ spec:
       example.com/log-provider: 'a-cheap-logging-stack'
     nodeSelector:
       kubernetes.io/role: app
+    imagePullSecrets:
+    - name: dockerhub-creds
 ---
 apiVersion: kuberule.chickenzord.com/v1alpha1
 kind: PodRule
@@ -50,6 +52,8 @@ spec:
     - key: dedicated-env
       operator: Equals
       value: production
+    imagePullSecrets:
+    - name: dockerhub-creds
 ```
 
 Don't get it? Basically it allows you to automatically add some predefined specs to selected Pods in certain namespaces. Supports for other resource objects and specs might be added in the future.
