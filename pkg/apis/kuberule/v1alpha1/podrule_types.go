@@ -8,8 +8,8 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// PodRuleMutations defines mutations to be applied on the selected pods
-type PodRuleMutations struct {
+// PodMutations defines mutations to be applied on the selected pods
+type PodMutations struct {
 
 	// Annotations to be merged with selected pods' existing annotations
 	// +optional
@@ -44,7 +44,7 @@ type PodRuleSpec struct {
 	Selector metav1.LabelSelector `json:"selector"`
 
 	// Mutations to be done on the selected pods
-	Mutations PodRuleMutations `json:"mutations,omitempty"`
+	Mutations PodMutations `json:"mutations,omitempty"`
 }
 
 // PodRuleStatus defines the observed state of PodRule
