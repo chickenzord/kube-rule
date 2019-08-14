@@ -53,7 +53,7 @@ spec:
       containers:
       - command:
         - /manager
-        image: chickenzord/kube-rule:0.1.0-rc
+        image: chickenzord/kube-rule:0.2.0
         imagePullPolicy: Always
         name: kuberule
         env:

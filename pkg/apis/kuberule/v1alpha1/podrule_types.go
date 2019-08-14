@@ -1,22 +1,37 @@
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// PodRuleMutations defines mutations to be applied on the selected pods
-type PodRuleMutations struct {
+// PodMutations defines mutations to be applied on the selected pods
+type PodMutations struct {
 
 	// Annotations to be merged with selected pods' existing annotations
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
-	// NodeSelector to be added to selected pods according to nodeSelectorStrategy
+	// If specified, the pod's scheduling constraints
+	// +optional
+	Affinity *corev1.Affinity `json:"affinity,omitempty"`
+
+	// NodeSelector to be added to selected pods
 	// +optional
 	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
+
+	// ImagePullSecrets to be added to selected pods
+	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	ImagePullSecrets []corev1.LocalObjectReference `json:"imagePullSecrets,omitempty"`
+
+	// If specified, the pod's tolerations.
+	// +optional
+	Tolerations []corev1.Toleration `json:"tolerations,omitempty"`
 }
 
 // PodRuleSpec defines the desired state of PodRule
@@ -29,7 +44,7 @@ type PodRuleSpec struct {
 	Selector metav1.LabelSelector `json:"selector"`
 
 	// Mutations to be done on the selected pods
-	Mutations PodRuleMutations `json:"mutations,omitempty"`
+	Mutations PodMutations `json:"mutations,omitempty"`
 }
 
 // PodRuleStatus defines the observed state of PodRule

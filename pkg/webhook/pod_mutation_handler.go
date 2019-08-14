@@ -10,18 +10,18 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
-	"sigs.k8s.io/controller-runtime/pkg/webhook/admission/types"
+	admissiontypes "sigs.k8s.io/controller-runtime/pkg/webhook/admission/types"
 )
 
 type podMutationHandler struct {
 	client  client.Client
-	decoder types.Decoder
+	decoder admissiontypes.Decoder
 }
 
 var _ admission.Handler = &podMutationHandler{} // Implements admission.Handler.
 
 // podMutationHandler try to mutate every incoming pods based on rules
-func (a *podMutationHandler) Handle(ctx context.Context, req types.Request) types.Response {
+func (a *podMutationHandler) Handle(ctx context.Context, req admissiontypes.Request) admissiontypes.Response {
 	// Decode request and make a clone to mutate
 	pod := &corev1.Pod{}
 	err := a.decoder.Decode(req, pod)
@@ -30,7 +30,7 @@ func (a *podMutationHandler) Handle(ctx context.Context, req types.Request) type
 	}
 	clone := pod.DeepCopy()
 
-	log.Info("receiving pod to handle",
+	log.Info("handling pod",
 		"request.namespace", req.AdmissionRequest.Namespace,
 		"request.operation", req.AdmissionRequest.Operation,
 		"pod.name", pod.Name,
@@ -66,20 +66,13 @@ func (a *podMutationHandler) Handle(ctx context.Context, req types.Request) type
 
 // mutatePodsFn mutates the given pod
 func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, rule kuberule.PodRule) error {
-	// for convenience
+	log.Info("applying mutations to pod",
+		"pod", &pod,
+		"rule", rule,
+	)
 	mutations := rule.Spec.Mutations
 
-	// apply annotations
-	log.Info("applying mutations to pod",
-		"mutations.annotations", mutations.Annotations,
-		"mutations.nodeSelector", mutations.NodeSelector,
-		"pod.name", pod.Name,
-		"pod.generateName", pod.GenerateName,
-		"pod.annotations", pod.Annotations,
-		"rule.name", rule.ObjectMeta.Name,
-	)
-
-	// apply annotations by merging with existing
+	// merge with existing annotations
 	if mutations.Annotations == nil {
 		mutations.Annotations = map[string]string{}
 	}
@@ -90,13 +83,48 @@ func (a *podMutationHandler) mutatePodsFn(ctx context.Context, pod *corev1.Pod, 
 		pod.Annotations[key] = val
 	}
 
-	// apply nodeSelector only if not already set
+	// apply affinity only if not already exists
+	if pod.Spec.Affinity != nil && mutations.Affinity != nil {
+		pod.Spec.Affinity = mutations.Affinity
+	}
+
+	// apply nodeSelector only if not already exists
 	if pod.Spec.NodeSelector == nil {
 		pod.Spec.NodeSelector = map[string]string{}
 	}
 	if len(pod.Spec.NodeSelector) == 0 {
 		for key, val := range mutations.NodeSelector {
 			pod.Spec.NodeSelector[key] = val
+		}
+	}
+
+	// append to existing tolerations
+	if pod.Spec.Tolerations == nil {
+		pod.Spec.Tolerations = []corev1.Toleration{}
+	}
+	if mutations.Tolerations != nil {
+		for _, toleration := range mutations.Tolerations {
+			pod.Spec.Tolerations = append(pod.Spec.Tolerations, toleration)
+		}
+	}
+
+	// append imagePullSecrets
+	if pod.Spec.ImagePullSecrets == nil {
+		pod.Spec.ImagePullSecrets = []corev1.LocalObjectReference{}
+	}
+	if mutations.ImagePullSecrets != nil {
+		for _, secret := range mutations.ImagePullSecrets {
+			found := false
+			for _, existing := range pod.Spec.ImagePullSecrets {
+				if secret.Name == existing.Name {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				pod.Spec.ImagePullSecrets = append(pod.Spec.ImagePullSecrets, secret)
+			}
 		}
 	}
 

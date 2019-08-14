@@ -22,7 +22,7 @@ func main() {
 	logf.SetLogger(logf.ZapLogger(false))
 	log := logf.Log.WithName("entrypoint")
 
-	log.Info(appconfig.Json())
+	log.Info(appconfig.JSON())
 
 	// Get a config to talk to the apiserver
 	log.Info("setting up client for manager")
@@ -40,7 +40,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	log.Info("Registering Components.")
+	log.Info("registering components")
 
 	// Setup Scheme for all resources
 	log.Info("setting up scheme")
@@ -50,7 +50,7 @@ func main() {
 	}
 
 	// Setup all Controllers
-	log.Info("Setting up controller")
+	log.Info("setting up controller")
 	if err := controller.AddToManager(mgr); err != nil {
 		log.Error(err, "unable to register controllers to the manager")
 		os.Exit(1)
@@ -63,7 +63,7 @@ func main() {
 	}
 
 	// Start the Cmd
-	log.Info("Starting the Cmd.")
+	log.Info("starting the cmd")
 	if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
 		log.Error(err, "unable to run the manager")
 		os.Exit(1)

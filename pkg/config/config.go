@@ -15,7 +15,6 @@ const PREFIX = "kuberule"
 
 var (
 	AppName         string
-	WebhookName     string
 	PodNamespace    string
 	Namespace       string
 	CertDir         string
@@ -41,9 +40,6 @@ func Initialize() {
 
 	viper.SetDefault("app.name", PREFIX)
 	AppName = viper.GetString("app.name")
-
-	viper.SetDefault("webhook.name", fmt.Sprintf("%s.kuberule.chickenzord.com", AppName))
-	WebhookName = viper.GetString("webhook.name")
 
 	PodNamespace, ok := os.LookupEnv("POD_NAMESPACE")
 	if !ok {
@@ -72,11 +68,13 @@ func Initialize() {
 	}
 }
 
+// Debug returns the entire config map
 func Debug() map[string]interface{} {
 	return viper.AllSettings()
 }
 
-func Json() string {
+// JSON returns JSON representation of the config
+func JSON() string {
 	if result, err := json.Marshal(Debug()); err == nil {
 		return string(result)
 	}
